@@ -99,8 +99,8 @@ Sistem ini dikembangkan dalam rangka **pengabdian kepada masyarakat** untuk mend
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/username/umkm-system.git
-cd umkm-system
+git clone git@github.com:pherwanto/umkm.git
+cd umkm
 ```
 
 ---
@@ -147,7 +147,7 @@ return [
 Jika menggunakan XAMPP:
 
 ```bash
-http://localhost/umkm-system/public
+http://localhost/umkm/public
 ```
 
 Jika menggunakan PHP built-in server:
@@ -284,9 +284,9 @@ Project ini dibuat untuk keperluan:
 
 ## 👨‍🏫 Pengembang
 
-Didik Indrayana
-Program Doktor Informatika
-Universitas Amikom Yogyakarta
+Patah Herwanto
+Universitas Ekuitas
+Putrasoft
 
 ---
 
