@@ -1,0 +1,69 @@
+digraph UseCase {
+  graph [rankdir=LR, splines=true, bgcolor="white"];
+  node [fontname="Helvetica"];
+  edge [fontname="Helvetica"];
+
+  subgraph cluster_system {
+    label="Sistem Informasi UMKM Multi-UMKM";
+    color="#94A3B8";
+    style="rounded";
+
+    uc_login [shape=ellipse, label="Login / Logout"];
+    uc_kelola_umkm [shape=ellipse, label="Kelola Data UMKM"];
+    uc_kelola_user [shape=ellipse, label="Kelola User & Hak Akses"];
+    uc_kelola_master [shape=ellipse, label="Kelola Master Data\nProduk, Kategori, Satuan,\nPelanggan, Supplier"];
+    uc_penjualan [shape=ellipse, label="Input Penjualan"];
+    uc_pembelian [shape=ellipse, label="Input Pembelian"];
+    uc_piutang [shape=ellipse, label="Kelola Piutang"];
+    uc_hutang [shape=ellipse, label="Kelola Hutang"];
+    uc_bayar_piutang [shape=ellipse, label="Pembayaran Piutang"];
+    uc_bayar_hutang [shape=ellipse, label="Pembayaran Hutang"];
+    uc_kas [shape=ellipse, label="Kelola Kas Masuk/Keluar"];
+    uc_stok [shape=ellipse, label="Pantau & Sesuaikan Stok"];
+    uc_dashboard [shape=ellipse, label="Lihat Dashboard"];
+    uc_laporan [shape=ellipse, label="Lihat / Cetak Laporan"];
+    uc_audit [shape=ellipse, label="Lihat Audit Log"];
+    uc_export [shape=ellipse, label="Export / Backup Data"];
+  }
+
+  superadmin [shape=box, style="rounded,filled", fillcolor="#E0F2FE", label="Super Admin"];
+  adminumkm [shape=box, style="rounded,filled", fillcolor="#DCFCE7", label="Admin UMKM / Pemilik"];
+  operator [shape=box, style="rounded,filled", fillcolor="#FEF3C7", label="Operator / Kasir"];
+
+  superadmin -> uc_login;
+  superadmin -> uc_kelola_umkm;
+  superadmin -> uc_kelola_user;
+  superadmin -> uc_dashboard;
+  superadmin -> uc_laporan;
+  superadmin -> uc_audit;
+  superadmin -> uc_export;
+
+  adminumkm -> uc_login;
+  adminumkm -> uc_dashboard;
+  adminumkm -> uc_kelola_master;
+  adminumkm -> uc_penjualan;
+  adminumkm -> uc_pembelian;
+  adminumkm -> uc_piutang;
+  adminumkm -> uc_hutang;
+  adminumkm -> uc_bayar_piutang;
+  adminumkm -> uc_bayar_hutang;
+  adminumkm -> uc_kas;
+  adminumkm -> uc_stok;
+  adminumkm -> uc_laporan;
+  adminumkm -> uc_export;
+  adminumkm -> uc_kelola_user;
+
+  operator -> uc_login;
+  operator -> uc_dashboard;
+  operator -> uc_penjualan;
+  operator -> uc_pembelian;
+  operator -> uc_bayar_piutang;
+  operator -> uc_stok;
+
+  uc_penjualan -> uc_piutang [style=dashed, label="jika kredit"];
+  uc_pembelian -> uc_hutang [style=dashed, label="jika hutang"];
+  uc_penjualan -> uc_kas [style=dashed, label="jika tunai"];
+  uc_pembelian -> uc_kas [style=dashed, label="jika tunai"];
+  uc_penjualan -> uc_stok [style=dashed, label="stok keluar"];
+  uc_pembelian -> uc_stok [style=dashed, label="stok masuk"];
+}

@@ -1,0 +1,11 @@
+body {
+    font-size: 0.95rem;
+}
+
+.login-page {
+    background: linear-gradient(135deg, #f4fff8 0%, #dff4e8 100%);
+}
+
+.card {
+    border-radius: 1rem;
+}

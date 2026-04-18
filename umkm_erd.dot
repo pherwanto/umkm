@@ -1,0 +1,71 @@
+digraph ERD {
+  graph [rankdir=LR, splines=ortho, nodesep=0.5, ranksep=1.0, bgcolor="white"];
+  node [shape=record, style="rounded,filled", fillcolor="#F8FAFC", color="#334155", fontname="Helvetica", fontsize=10];
+  edge [color="#64748B", arrowsize=0.8, fontname="Helvetica", fontsize=9];
+
+  umkm [label="{umkm|+ id : bigint PK\l+ kode_umkm : varchar(30) UK\l+ nama_umkm : varchar(150)\l+ nama_pemilik : varchar(150)\l+ alamat : text\l+ telepon : varchar(30)\l+ email : varchar(100)\l+ jenis_usaha : varchar(100)\l+ status : enum\l+ created_at\l+ updated_at\l}"];
+  roles [label="{roles|+ id : bigint PK\l+ nama_role : varchar(50) UK\l+ deskripsi : varchar(255)\l}"];
+  users [label="{users|+ id : bigint PK\l+ umkm_id : bigint FK\l+ role_id : bigint FK\l+ nama : varchar(150)\l+ username : varchar(100) UK\l+ password_hash : varchar(255)\l+ email : varchar(100)\l+ telepon : varchar(30)\l+ status : enum\l+ last_login : datetime\l+ created_at\l+ updated_at\l}"];
+  kategori_produk [label="{kategori_produk|+ id : bigint PK\l+ umkm_id : bigint FK\l+ nama_kategori : varchar(100)\l+ deskripsi : varchar(255)\l+ created_at\l+ updated_at\l}"];
+  satuan [label="{satuan|+ id : bigint PK\l+ nama_satuan : varchar(50) UK\l+ keterangan : varchar(255)\l}"];
+  produk [label="{produk|+ id : bigint PK\l+ umkm_id : bigint FK\l+ kategori_id : bigint FK\l+ satuan_id : bigint FK\l+ kode_produk : varchar(50)\l+ nama_produk : varchar(150)\l+ harga_beli : decimal(18,2)\l+ harga_jual : decimal(18,2)\l+ stok : decimal(18,2)\l+ stok_minimum : decimal(18,2)\l+ status : enum\l+ created_at\l+ updated_at\l}"];
+  pelanggan [label="{pelanggan|+ id : bigint PK\l+ umkm_id : bigint FK\l+ nama_pelanggan : varchar(150)\l+ alamat : text\l+ telepon : varchar(30)\l+ jenis_pelanggan : varchar(50)\l+ catatan : text\l}"];
+  supplier [label="{supplier|+ id : bigint PK\l+ umkm_id : bigint FK\l+ nama_supplier : varchar(150)\l+ alamat : text\l+ telepon : varchar(30)\l+ jenis_supplier : varchar(50)\l+ catatan : text\l}"];
+  penjualan [label="{penjualan|+ id : bigint PK\l+ umkm_id : bigint FK\l+ kode_penjualan : varchar(50)\l+ tanggal : datetime\l+ pelanggan_id : bigint FK\l+ user_id : bigint FK\l+ subtotal : decimal(18,2)\l+ diskon : decimal(18,2)\l+ total : decimal(18,2)\l+ dibayar : decimal(18,2)\l+ sisa : decimal(18,2)\l+ metode_pembayaran : enum\l+ status_pembayaran : enum\l}"];
+  penjualan_detail [label="{penjualan_detail|+ id : bigint PK\l+ penjualan_id : bigint FK\l+ produk_id : bigint FK\l+ qty : decimal(18,2)\l+ harga : decimal(18,2)\l+ subtotal : decimal(18,2)\l}"];
+  pembelian [label="{pembelian|+ id : bigint PK\l+ umkm_id : bigint FK\l+ kode_pembelian : varchar(50)\l+ tanggal : datetime\l+ supplier_id : bigint FK\l+ user_id : bigint FK\l+ subtotal : decimal(18,2)\l+ diskon : decimal(18,2)\l+ total : decimal(18,2)\l+ dibayar : decimal(18,2)\l+ sisa : decimal(18,2)\l+ metode_pembayaran : enum\l+ status_pembayaran : enum\l}"];
+  pembelian_detail [label="{pembelian_detail|+ id : bigint PK\l+ pembelian_id : bigint FK\l+ produk_id : bigint FK\l+ qty : decimal(18,2)\l+ harga : decimal(18,2)\l+ subtotal : decimal(18,2)\l}"];
+  piutang [label="{piutang|+ id : bigint PK\l+ umkm_id : bigint FK\l+ penjualan_id : bigint FK\l+ pelanggan_id : bigint FK\l+ tanggal_piutang : date\l+ jatuh_tempo : date\l+ total_piutang : decimal(18,2)\l+ total_bayar : decimal(18,2)\l+ sisa_piutang : decimal(18,2)\l+ status : enum\l}"];
+  pembayaran_piutang [label="{pembayaran_piutang|+ id : bigint PK\l+ piutang_id : bigint FK\l+ tanggal_bayar : datetime\l+ nominal_bayar : decimal(18,2)\l+ metode_pembayaran : enum\l+ user_id : bigint FK\l}"];
+  hutang [label="{hutang|+ id : bigint PK\l+ umkm_id : bigint FK\l+ pembelian_id : bigint FK\l+ supplier_id : bigint FK\l+ tanggal_hutang : date\l+ jatuh_tempo : date\l+ total_hutang : decimal(18,2)\l+ total_bayar : decimal(18,2)\l+ sisa_hutang : decimal(18,2)\l+ status : enum\l}"];
+  pembayaran_hutang [label="{pembayaran_hutang|+ id : bigint PK\l+ hutang_id : bigint FK\l+ tanggal_bayar : datetime\l+ nominal_bayar : decimal(18,2)\l+ metode_pembayaran : enum\l+ user_id : bigint FK\l}"];
+  kategori_kas [label="{kategori_kas|+ id : bigint PK\l+ umkm_id : bigint FK\l+ nama_kategori : varchar(100)\l+ jenis : enum\l+ keterangan : varchar(255)\l}"];
+  kas [label="{kas|+ id : bigint PK\l+ umkm_id : bigint FK\l+ tanggal : datetime\l+ kategori_kas_id : bigint FK\l+ jenis : enum\l+ nominal : decimal(18,2)\l+ referensi_tipe : varchar(50)\l+ referensi_id : bigint\l+ user_id : bigint FK\l}"];
+  mutasi_stok [label="{mutasi_stok|+ id : bigint PK\l+ umkm_id : bigint FK\l+ produk_id : bigint FK\l+ tanggal : datetime\l+ jenis_mutasi : enum\l+ qty_masuk : decimal(18,2)\l+ qty_keluar : decimal(18,2)\l+ stok_sebelum : decimal(18,2)\l+ stok_sesudah : decimal(18,2)\l+ referensi_tipe : varchar(50)\l+ referensi_id : bigint\l+ user_id : bigint FK\l}"];
+  audit_log [label="{audit_log|+ id : bigint PK\l+ umkm_id : bigint FK\l+ user_id : bigint FK\l+ aktivitas : varchar(150)\l+ tabel_ref : varchar(100)\l+ data_ref_id : bigint\l+ keterangan : text\l+ created_at\l}"];
+
+  umkm -> users [label="1..n"];
+  roles -> users [label="1..n"];
+  umkm -> kategori_produk [label="1..n"];
+  umkm -> produk [label="1..n"];
+  kategori_produk -> produk [label="1..n"];
+  satuan -> produk [label="1..n"];
+  umkm -> pelanggan [label="1..n"];
+  umkm -> supplier [label="1..n"];
+
+  umkm -> penjualan [label="1..n"];
+  pelanggan -> penjualan [label="1..n"];
+  users -> penjualan [label="1..n"];
+  penjualan -> penjualan_detail [label="1..n"];
+  produk -> penjualan_detail [label="1..n"];
+
+  umkm -> pembelian [label="1..n"];
+  supplier -> pembelian [label="1..n"];
+  users -> pembelian [label="1..n"];
+  pembelian -> pembelian_detail [label="1..n"];
+  produk -> pembelian_detail [label="1..n"];
+
+  umkm -> piutang [label="1..n"];
+  penjualan -> piutang [label="0..1"];
+  pelanggan -> piutang [label="1..n"];
+  piutang -> pembayaran_piutang [label="1..n"];
+  users -> pembayaran_piutang [label="1..n"];
+
+  umkm -> hutang [label="1..n"];
+  pembelian -> hutang [label="0..1"];
+  supplier -> hutang [label="1..n"];
+  hutang -> pembayaran_hutang [label="1..n"];
+  users -> pembayaran_hutang [label="1..n"];
+
+  umkm -> kategori_kas [label="1..n"];
+  umkm -> kas [label="1..n"];
+  kategori_kas -> kas [label="1..n"];
+  users -> kas [label="1..n"];
+
+  umkm -> mutasi_stok [label="1..n"];
+  produk -> mutasi_stok [label="1..n"];
+  users -> mutasi_stok [label="1..n"];
+
+  umkm -> audit_log [label="1..n"];
+  users -> audit_log [label="1..n"];
+}
