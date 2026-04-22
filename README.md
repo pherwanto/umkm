@@ -284,9 +284,9 @@ Project ini dibuat untuk keperluan:
 
 ## 👨‍🏫 Pengembang
 
-Patah Herwanto
-Universitas Ekuitas
-Putrasoft
+* Patah Herwanto
+* Universitas Ekuitas
+* Putrasoft
 
 ---
 
