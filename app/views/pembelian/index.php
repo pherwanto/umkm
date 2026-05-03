@@ -81,6 +81,15 @@
         <tr><td colspan="8" class="text-center text-muted py-5">Belum ada transaksi pembelian.</td></tr>
       <?php endif; ?>
       </tbody>
+      <tfoot>
+        <tr class="table-light fw-semibold">
+          <td colspan="3">Summary Halaman Aktif</td>
+          <td class="text-end"><?= e(fmt_rp((int)($summary['total'] ?? 0))) ?></td>
+          <td class="text-end"><?= e(fmt_rp((int)($summary['dibayar'] ?? 0))) ?></td>
+          <td class="text-end"><?= e(fmt_rp((int)($summary['sisa'] ?? 0))) ?></td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>

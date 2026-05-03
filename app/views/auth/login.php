@@ -46,6 +46,8 @@
 .ls-top{position:relative;z-index:1}
 .ls-logo-wrap{display:flex;align-items:center;gap:.75rem;margin-bottom:3.5rem}
 .ls-logo-img{height:36px;filter:brightness(0) invert(1) drop-shadow(0 0 12px rgba(99,179,255,.4))}
+.ls-logo-img-ykp{height:36px;filter:drop-shadow(0 0 10px rgba(255,255,255,.2))}
+.ls-logo-img-bjb{height:36px;filter:drop-shadow(0 0 10px rgba(255,255,255,.2))}
 .ls-wordmark{font-family:'Playfair Display',serif;font-size:1.05rem;letter-spacing:.04em;color:rgba(255,255,255,.7)}
 
 .ls-headline{
@@ -330,6 +332,8 @@
     <div class="ls-top">
       <div class="ls-logo-wrap">
         <img class="ls-logo-img" src="https://ekuitas.ac.id/storage/asset/ekuitas-h.png" alt="Universitas Ekuitas Indonesia">
+        <img class="ls-logo-img-ykp" src="https://ekuitas.ac.id/storage/asset/logo%20YKP%20Mitra.png" alt="Logo YKP Mitra">
+        <img class="ls-logo-img-bjb" src="https://ekuitas.ac.id/storage/asset/bank-bjb.png" alt="Logo Bank BJB">
       </div>
 
       <h1 class="ls-headline">
@@ -417,7 +421,7 @@
 
       <div class="ls-footer-row">
         <a class="ls-link" href="<?= e(url('index.php?page=forgot-password')) ?>">Lupa password?</a>
-        <span class="ls-demo">Demo: <strong>superadmin</strong> / 123456</span>
+        <span class="ls-demo"></span>
       </div>
     </div>
   </section>

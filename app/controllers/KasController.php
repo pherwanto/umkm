@@ -11,10 +11,26 @@ class KasController extends Controller {
             'date_from' => trim((string)($_GET['date_from'] ?? '')),
             'date_to' => trim((string)($_GET['date_to'] ?? '')),
         ];
+        $rows = $m->all(current_umkm_id(), $filters);
+        $saldoAkhir = 0.0;
+        foreach ($rows as $r) {
+            $delta = ($r['jenis'] ?? '') === 'masuk' ? (float)($r['nominal'] ?? 0) : -(float)($r['nominal'] ?? 0);
+            $saldoAkhir += $delta;
+        }
+        foreach ($rows as $i => $r) {
+            $delta = ($r['jenis'] ?? '') === 'masuk' ? (float)($r['nominal'] ?? 0) : -(float)($r['nominal'] ?? 0);
+            $rows[$i]['saldo_akhir'] = $saldoAkhir;
+            $rows[$i]['saldo_awal'] = $saldoAkhir - $delta;
+            $saldoAkhir = $rows[$i]['saldo_awal'];
+        }
+        $saldoAwalPeriode = $rows ? (float)$rows[count($rows) - 1]['saldo_awal'] : 0.0;
+        $saldoAkhirPeriode = $rows ? (float)$rows[0]['saldo_akhir'] : 0.0;
         $this->view('kas_manual/index', [
             'title' => 'Kas Manual Masuk/Keluar',
-            'rows' => $m->all(current_umkm_id(), $filters),
+            'rows' => $rows,
             'filters' => $filters,
+            'saldo_awal_periode' => $saldoAwalPeriode,
+            'saldo_akhir_periode' => $saldoAkhirPeriode,
         ]);
     }
     public function create(): void {

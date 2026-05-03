@@ -11,9 +11,16 @@ class PembelianController extends Controller {
             'date_from'=>trim($_GET['date_from'] ?? ''),
             'date_to'=>trim($_GET['date_to'] ?? ''),
         ];
+        $rows = $m->pembelianAll(current_umkm_id(), $filters);
+        $summary = [
+            'total' => (int)array_sum(array_map(static fn($r) => (float)($r['total'] ?? 0), $rows)),
+            'dibayar' => (int)array_sum(array_map(static fn($r) => (float)($r['dibayar'] ?? 0), $rows)),
+            'sisa' => (int)array_sum(array_map(static fn($r) => (float)($r['sisa'] ?? 0), $rows)),
+        ];
         $this->view('pembelian/index',[
             'title'=>'Pembelian',
-            'rows'=>$m->pembelianAll(current_umkm_id(), $filters),
+            'rows'=>$rows,
+            'summary'=>$summary,
             'supplierOptions'=>$m->supplierAll(current_umkm_id()),
             'filters'=>$filters,
         ]);

@@ -12,9 +12,27 @@
     <div class="mobile-stack"><button class="btn btn-primary">Filter</button><a class="btn btn-outline-secondary" href="<?= e(url('index.php?page=kas-manual')) ?>">Reset</a></div>
   </form>
 </div></div>
-<div class="card enterprise-card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0 align-middle"><thead><tr><th width="60">No</th><th>Tanggal</th><th>Kategori</th><th>Jenis</th><th>Nominal</th><th>Keterangan</th><th>Input Oleh</th><th width="170">Aksi</th></tr></thead><tbody>
-<?php if(!$rows): ?><tr><td colspan="8" class="text-center text-muted py-4">Belum ada data kas manual.</td></tr><?php else: foreach($rows as $i=>$row): ?><tr>
-<td><?= $i+1 ?></td><td><?= e(date('d-m-Y H:i', strtotime($row['tanggal']))) ?></td><td><?= e($row['nama_kategori']) ?></td><td><span class="badge <?= $row['jenis']==='masuk' ? 'text-bg-success' : 'text-bg-danger' ?>"><?= e(ucfirst($row['jenis'])) ?></span></td><td class="fw-semibold"><?= e(fmt_rp($row['nominal'])) ?></td><td><?= e($row['keterangan'] ?? '-') ?></td><td><?= e($row['user_nama'] ?? '-') ?></td>
+<div class="row g-3 mb-3">
+  <div class="col-12 col-md-6">
+    <div class="card enterprise-card h-100">
+      <div class="card-body">
+        <div class="text-muted small">Saldo Awal Periode</div>
+        <div class="h5 mb-0"><?= e(fmt_rp((float)($saldo_awal_periode ?? 0))) ?></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="card enterprise-card h-100">
+      <div class="card-body">
+        <div class="text-muted small">Saldo Akhir Periode</div>
+        <div class="h5 mb-0"><?= e(fmt_rp((float)($saldo_akhir_periode ?? 0))) ?></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card enterprise-card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0 align-middle"><thead><tr><th width="60">No</th><th>Tanggal</th><th>Kategori</th><th>Jenis</th><th>Nominal</th><th>Saldo Awal</th><th>Saldo Akhir</th><th>Keterangan</th><th>Input Oleh</th><th width="170">Aksi</th></tr></thead><tbody>
+<?php if(!$rows): ?><tr><td colspan="10" class="text-center text-muted py-4">Belum ada data kas manual.</td></tr><?php else: foreach($rows as $i=>$row): ?><tr>
+<td><?= $i+1 ?></td><td><?= e(date('d-m-Y H:i', strtotime($row['tanggal']))) ?></td><td><?= e($row['nama_kategori']) ?></td><td><span class="badge <?= $row['jenis']==='masuk' ? 'text-bg-success' : 'text-bg-danger' ?>"><?= e(ucfirst($row['jenis'])) ?></span></td><td class="fw-semibold"><?= e(fmt_rp($row['nominal'])) ?></td><td class="fw-semibold"><?= e(fmt_rp($row['saldo_awal'] ?? 0)) ?></td><td class="fw-semibold"><?= e(fmt_rp($row['saldo_akhir'] ?? 0)) ?></td><td><?= e($row['keterangan'] ?? '-') ?></td><td><?= e($row['user_nama'] ?? '-') ?></td>
 <td><div class="d-flex gap-2 flex-wrap"><a class="btn btn-outline-primary btn-sm" href="<?= e(url('index.php?page=kas-manual-edit&id='.(int)$row['id'])) ?>">Edit</a><form method="post" action="<?= e(url('index.php?page=kas-manual-delete')) ?>" onsubmit="return confirm('Hapus transaksi kas manual ini?')"><input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="id" value="<?= (int)$row['id'] ?>"><button class="btn btn-outline-danger btn-sm">Hapus</button></form></div></td>
 </tr><?php endforeach; endif; ?>
 </tbody></table></div></div></div>

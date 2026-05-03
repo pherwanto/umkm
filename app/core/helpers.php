@@ -1,7 +1,16 @@
 <?php
 require_once __DIR__ . '/Database.php';
 function app_config(): array { static $app; if (!$app) $app = require __DIR__ . '/../config/app.php'; return $app; }
-function url(string $path = ''): string { $base = rtrim(app_config()['base_url'], '/'); return $base . '/' . ltrim($path, '/'); }
+function url(string $path = ''): string {
+    $base = rtrim((string)app_config()['base_url'], '/');
+    $scriptDir = str_replace('\\', '/', (string)dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+    if (($scriptDir === '/' || $scriptDir === '.') && ($base === '/public' || str_ends_with($base, '/public'))) {
+        $base = preg_replace('#/public$#', '', $base) ?: '';
+    }
+    $path = ltrim($path, '/');
+    if ($base === '') return '/' . $path;
+    return $base . '/' . $path;
+}
 if (!function_exists('e')) {
     function e(?string $value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }
 }

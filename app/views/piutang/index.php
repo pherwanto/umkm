@@ -54,6 +54,15 @@
         <tr><td colspan="7" class="text-center text-muted py-5">Belum ada data piutang.</td></tr>
       <?php endif; ?>
       </tbody>
+      <tfoot>
+      <tr class="table-light fw-semibold">
+        <td colspan="2">Summary Halaman Aktif</td>
+        <td class="text-end"><?= e(fmt_rp((int)($summary['total_piutang'] ?? 0))) ?></td>
+        <td class="text-end"><?= e(fmt_rp((int)($summary['total_bayar'] ?? 0))) ?></td>
+        <td class="text-end"><?= e(fmt_rp((int)($summary['sisa_piutang'] ?? 0))) ?></td>
+        <td colspan="2"></td>
+      </tr>
+      </tfoot>
     </table>
   </div>
 </div>

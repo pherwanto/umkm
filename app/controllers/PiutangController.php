@@ -5,7 +5,13 @@ class PiutangController extends Controller {
     public function index(): void {
         require_roles('super_admin','admin_umkm');
         $m=new TransaksiModel();
-        $this->view('piutang/index',['title'=>'Piutang','rows'=>$m->piutangAll(current_umkm_id())]);
+        $rows = $m->piutangAll(current_umkm_id());
+        $summary = [
+            'total_piutang' => (int)array_sum(array_map(static fn($r) => (float)($r['total_piutang'] ?? 0), $rows)),
+            'total_bayar' => (int)array_sum(array_map(static fn($r) => (float)($r['total_bayar'] ?? 0), $rows)),
+            'sisa_piutang' => (int)array_sum(array_map(static fn($r) => (float)($r['sisa_piutang'] ?? 0), $rows)),
+        ];
+        $this->view('piutang/index',['title'=>'Piutang','rows'=>$rows,'summary'=>$summary]);
     }
 
     public function pay(): void {

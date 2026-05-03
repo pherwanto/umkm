@@ -10,8 +10,13 @@ function app_config(): array
 
 function base_url(string $path = ''): string
 {
-    $base = rtrim(app_config()['base_url'], '/');
+    $base = rtrim((string)app_config()['base_url'], '/');
+    $scriptDir = str_replace('\\', '/', (string)dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
+    if (($scriptDir === '/' || $scriptDir === '.') && ($base === '/public' || str_ends_with($base, '/public'))) {
+        $base = preg_replace('#/public$#', '', $base) ?: '';
+    }
     $path = ltrim($path, '/');
+    if ($base === '') return '/' . $path;
     return $path ? $base . '/' . $path : $base . '/';
 }
 

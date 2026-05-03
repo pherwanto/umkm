@@ -10,7 +10,13 @@ class PenjualanController extends Controller {
             'date_from'=>trim((string)($_GET['date_from'] ?? '')),
             'date_to'=>trim((string)($_GET['date_to'] ?? '')),
         ];
-        $this->view('penjualan/index',['title'=>'Penjualan','rows'=>$m->penjualanAll(current_umkm_id(), $filters),'filters'=>$filters]);
+        $rows = $m->penjualanAll(current_umkm_id(), $filters);
+        $summary = [
+            'total' => (int)array_sum(array_map(static fn($r) => (float)($r['total'] ?? 0), $rows)),
+            'dibayar' => (int)array_sum(array_map(static fn($r) => (float)($r['dibayar'] ?? 0), $rows)),
+            'sisa' => (int)array_sum(array_map(static fn($r) => (float)($r['sisa'] ?? 0), $rows)),
+        ];
+        $this->view('penjualan/index',['title'=>'Penjualan','rows'=>$rows,'filters'=>$filters,'summary'=>$summary]);
     }
     public function create(): void {
         require_roles('super_admin','admin_umkm','operator');
@@ -21,7 +27,7 @@ class PenjualanController extends Controller {
             csrf_check();
             $id = $m->createPenjualan($_POST,current_umkm_id(),(int)current_user()['id']);
             flash('success','Penjualan berhasil disimpan.');
-            $this->redirect('index.php?page=penjualan-invoice&id=' . $id . '&autoprint=1&return=' . rawurlencode(url('index.php?page=penjualan-create')));
+            $this->redirect('index.php?page=penjualan-invoice&id=' . $id);
         }
         $this->view('penjualan/form',['title'=>'Tambah Penjualan','productCategories'=>$m->kategoriProdukAll(current_umkm_id()),'initialProducts'=>$m->searchProduk(current_umkm_id(), ''),'formAction'=>url('index.php?page=penjualan-create'),'data'=>['tanggal'=>date('Y-m-d\TH:i'),'diskon'=>0,'dibayar'=>0,'metode_pembayaran'=>'tunai','is_pajak_enabled'=>!empty($taxCfg['enabled']) ? 1 : 0,'pajak_persen'=>(float)($taxCfg['percent'] ?? 11),'items'=>[]],'isEdit'=>false]);
     }
